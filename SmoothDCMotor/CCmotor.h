@@ -8,14 +8,25 @@ class CCMotor{
   private:
     //Aceleracion
     int aceleracion;
-    //Velocidad minima y maxima de 0-255
+	
+    //*********Atributos relacionados a la velocidad*************
+	
+	//Velocidad con la que se desea que inicie el motor
     int velini;
+	
+	//Velocidad actual en un instante t
     int velact;
+	
+	//Velocidad maxima que se desea alcance el motor
     int velmax;
+	
+	//Variable temporal
     int timpo;
+	
     //Pines de control para el motor
     int ctrla;
     int ctrlb;
+	
     //Variable temporal
     int tiempo = 0;
     char anteriorMotor;
@@ -23,13 +34,17 @@ class CCMotor{
     //tiempos para el timer
     unsigned long tiempoActual;
     unsigned long tiempoAnterior;
+	
+	
+    //Metodo privado que calcula la velocidad en funcion de la aceleracion
+    void acelera();
     
 
    public:
-   //Constructor, crea el objeto requiere los pines de control
+   //Constructor, crea el objeto, requiere los pines de control
    CCMotor(int pin1, int pin2);
    
-   //Funciones Set, para establecer:
+   //*****************Metodos Set******************************
    //aceleracion
    void SetAcel(int acel);
    
@@ -42,20 +57,22 @@ class CCMotor{
    //Todos los parametros
    void SetParams(int acel, int vini, int vmax); 
 
-   //Solicita los parametros establecidos y los imprime por serial (115200)BAUDS
+   //*****************Metodos Get********************************
+   
+   //Solicita todos los parametros establecidos y los imprime por serial (115200)BAUDS
    void GetAllParams();
-
+	
+   //Solicita la velocidad actual y la imprime por serial a (115200) BAUDS
    void GetVelocidadActual();
 
-    //Metodo privado que calcula la velocidad en funcion de la aceleracion
-   void acelera();
+   //******************Metodos de funcionalidades****************************
 
    //Funcion para iniciar giro
    void Gira(char direccion);
-
+   
    //Funcion Para parar el motor
-
    void parar();
+   
   
 };
 
