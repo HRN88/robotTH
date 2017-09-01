@@ -1,11 +1,24 @@
+#include <CCmotor.h>
+
 //Se incluyen las librerias necesarias
-#include "CCMotor.h"
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
 #include <Servo.h>
 
-//Constantes para la comunicacion SPI
+
+//**************Variables para la funcion Goservo*******************
+float current_pos;
+//Sensibilidad
+float easing = 0.05;
+//Arreglo con los valores objetivo de cada pocision
+float target_pos[5] = {600, 960, 1320, 1680, 2100}   ;
+//Guarda la diferencia
+float diff;
+
+//******************************************************************
+
+//Constantes para la comunicacion 
 #define CE_PIN 9
 #define CSN_PIN 10
 
@@ -34,7 +47,7 @@ RF24 receptor(CE_PIN, CSN_PIN);
 //Instancia de servomotor
 Servo servo;
 
-
+void Goservo(int i);
 void setup() {
   // put your setup code here, to run once:
   //Se inicia la comuicacion con el modulo inalambrico
@@ -53,6 +66,8 @@ void setup() {
 
    //Se especifica el pin de control para el servomotor
    servo.attach(20);
+   Goservo(4);
+   delay(100);
 }
 
 
@@ -109,19 +124,19 @@ void loop() {
   //Estados para el servomotor, los valores dentro
   //De servo.write representan los angulos
     case '1':
-      servo.write(70);
+      Goservo(4);
     break;
     case '2':
-      servo.write(90);
+      Goservo(3);    
     break;
     case '3':
-      servo.write(110);
+      Goservo(2);
     break;
     case '4':
-      servo.write(130);
+      Goservo(1);
     break;
     case '5':
-      servo.write(150);
+      Goservo(0);
     break;
     
   //Caso default, el sistema permanece inmovil   
@@ -134,5 +149,18 @@ void loop() {
    }
    
 }
+
+void Goservo(int i){
+  //Funcion para mover el servomotor a determinada pocision
+  diff = target_pos[i] - current_pos;
+  if(diff != 0){
+    current_pos += diff*easing;
+  }
+  servo.writeMicroseconds(current_pos);
+  Serial.println("se ha movido el servo");
+  delay(20);
+}
+  
+
 
 
