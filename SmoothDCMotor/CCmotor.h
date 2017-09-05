@@ -4,6 +4,9 @@
 //
 ////////////////////////////////
 
+#ifndef CCMotor_h
+#define CCMotor_h
+
 class CCMotor{
   private:
     //Aceleracion
@@ -75,6 +78,7 @@ class CCMotor{
    
   
 };
+#endif
 
 
 
